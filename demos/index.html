@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Demos · GIWA {IA}</title>
+<meta name="description" content="Conocé nuestras demos y pedí un código para probarlas.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+<header class="top">
+  <a class="marca" href="../"><img src="../assets/img/logo.png" alt="GIWA {IA}" width="150" height="35"></a>
+  <nav>
+    <a href="../quienes-somos/">Quiénes somos</a>
+    <a href="../quienes-somos/casos-de-exito/">Casos de éxito</a>
+    <a href="../demos/">Demos</a>
+    <a href="../contacto/">Contacto</a>
+    <a href="https://script.google.com/macros/s/AKfycbxeIOlZVxVS6gSBbCpGdvgHEyFpAbI5qOc8JggbjmXZUAk15k1bq_JUIMF8pg2h7xgF/exec" target="_blank" rel="noopener">Soporte <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></a>
+    <a href="../portal-interno/">Portal interno</a>
+  </nav>
+</header>
+<main>
+<section class="sec-w">
+  <p class="sec">Demos</p>
+  <h1>Probalo vos mismo.</h1>
+  <p class="lead">No te contamos lo que hacemos. Te lo mostramos. Para entrar a una demo necesitás un código personal.</p>
+  <button class="btn bp" type="button" data-pedir>Pedir acceso <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+  <p id="estado" class="nota aire" role="status">Cargando demos…</p>
+  <div id="demos" class="grid2"></div>
+</section>
+</main>
+<footer class="pie">
+  <img src="../assets/img/logo.png" alt="GIWA {IA}" width="120" height="28">
+  <p>© <span class="n">2023</span> GIWA {IA} · Moldes <span class="n">1448</span>, CABA, Argentina</p>
+  <p class="pie-links">
+    <a href="../">Inicio</a>
+    <a href="../contacto/">Hablemos</a>
+    <a href="https://www.instagram.com/Giwa.ia" target="_blank" rel="noopener">Instagram</a>
+    <a href="https://www.linkedin.com/company/giwa-ia" target="_blank" rel="noopener">LinkedIn</a>
+    <a href="../quienes-somos/politica-privacidad/">Política de integridad de datos</a>
+  </p>
+</footer>
+<div class="mo" id="moCodigo" hidden>
+  <form class="md" id="fCodigo">
+    <div class="mh"><h2 id="tCodigo">Ingresar</h2><button class="btn-ico" type="button" data-cerrar aria-label="Cerrar"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+    <div class="fg"><label class="fl" for="codigo">Tu código</label><input class="fc n" id="codigo" required autocomplete="off" placeholder="GIWA-XXXX-XXXX"></div>
+    <p class="aviso" id="eCodigo" role="alert" hidden></p>
+    <div class="mf"><button class="btn bg" type="button" data-pedir>No tengo código</button><button class="btn bp" type="submit">Ingresar</button></div>
+  </form>
+</div>
+<div class="mo" id="moPedir" hidden>
+  <form class="md" id="fPedir">
+    <div class="mh"><h2>Pedir acceso</h2><button class="btn-ico" type="button" data-cerrar aria-label="Cerrar"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+    <div class="fg"><label class="fl" for="nombre">Nombre y apellido</label><input class="fc" id="nombre" name="nombre" required maxlength="120" autocomplete="name"></div>
+    <div class="fg"><label class="fl" for="empresa">Empresa</label><input class="fc" id="empresa" name="empresa" required maxlength="120" autocomplete="organization"></div>
+    <div class="fg"><label class="fl" for="email">Email</label><input class="fc" id="email" name="email" type="email" required maxlength="160" autocomplete="email"></div>
+    <div class="fg"><label class="fl" for="telefono">Teléfono (opcional)</label><input class="fc" id="telefono" name="telefono" type="tel" maxlength="40" autocomplete="tel"></div>
+    <div class="fg"><label class="fl" for="interes">¿Qué demo te interesa?</label><select class="fc" id="interes" name="interes"><option>Todas</option></select></div>
+    <div class="fg"><label class="fl" for="mensaje">Contanos qué querés resolver (opcional)</label><textarea class="fc" id="mensaje" name="mensaje" rows="3" maxlength="1000"></textarea></div>
+    <div class="trampa" aria-hidden="true"><label>No completar<input name="sitio" tabindex="-1" autocomplete="off"></label></div>
+    <label class="acepta"><input type="checkbox" name="acepta" required> <span>Acepto que GIWA guarde estos datos para gestionar mi acceso, según la <a href="../quienes-somos/politica-privacidad/" target="_blank">política de integridad de datos</a>.</span></label>
+    <p class="aviso" id="ePedir" role="alert" hidden></p>
+    <div class="mf"><button class="btn bp" type="submit">Enviar solicitud</button></div>
+  </form>
+</div>
+<script src="../assets/demos.js"></script>
+</body>
+</html>
