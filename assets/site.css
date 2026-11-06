@@ -33,6 +33,7 @@ p{margin:0 0 18px}
 .top nav a{display:inline-flex;align-items:center;gap:4px;color:var(--tx);text-decoration:none;font-size:12.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;transition:color .2s}
 .top nav a:hover{color:var(--azul)}
 .top nav .ico{width:13px;height:13px}
+.menu-btn{display:none}
 
 /* Intro */
 .intro{position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;background:#02030c;cursor:pointer;transition:opacity .8s}
@@ -49,7 +50,7 @@ p{margin:0 0 18px}
 .hero .btn{animation:sube .9s .35s both}
 .etiqueta{display:inline-flex;align-items:center;gap:10px;margin-bottom:24px;padding:7px 14px;border:1px solid var(--violeta);border-radius:var(--r-btn);color:var(--tx);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;animation:sube .9s both}
 .punto{width:7px;height:7px;border-radius:50%;background:var(--violeta);animation:titila 1.8s infinite}
-.hero-marco{justify-self:center;width:100%;max-width:480px;aspect-ratio:1/1.05;overflow:hidden;mix-blend-mode:screen;animation:flota 7s ease-in-out infinite}
+.hero-marco{justify-self:center;width:100%;max-width:480px;aspect-ratio:1/1.05;overflow:hidden;mix-blend-mode:screen;-webkit-mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent),linear-gradient(transparent,#000 7%,#000 93%,transparent);-webkit-mask-composite:source-in;mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent),linear-gradient(transparent,#000 7%,#000 93%,transparent);mask-composite:intersect;animation:flota 7s ease-in-out infinite}
 .hero-vid{width:100%;height:100%;object-fit:cover;display:block}
 
 /* Marquesina */
@@ -167,11 +168,21 @@ input.n{font-family:var(--mono);text-transform:uppercase}
 @media (max-width:900px){
   .hero,.dos,.grid2,.grid3{grid-template-columns:minmax(0,1fr)}
   .galeria{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .hero-marco{max-width:340px;grid-row:1}
+  .hero-marco{max-width:300px}
   body{font-size:17px}
 }
 @media (max-width:720px){
-  .top{position:static}
+  .marca img{width:130px}
+  .menu-btn{display:inline-flex;width:44px;height:44px;color:var(--tx)}
+  .menu-btn .ico{width:24px;height:24px}
+  .top.con-menu nav{display:none;width:100%}
+  .top.con-menu.abierto nav{display:flex;flex-direction:column;gap:0;padding-top:6px}
+  .top nav a{min-height:44px;font-size:13px}
+  .sec-w,.hero{padding-top:44px;padding-bottom:44px}
+  .banda{min-height:440px}
+  .card{padding:24px}
+  .chat{height:520px}
+  .intro .btn{right:16px;bottom:16px}
 }
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}

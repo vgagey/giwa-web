@@ -1,6 +1,16 @@
 (function () {
   var quieto = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  // Menú del celular.
+  var top = document.querySelector('.top');
+  var menu = top.querySelector('.menu-btn');
+  top.classList.add('con-menu');
+  menu.addEventListener('click', function () {
+    var abierto = top.classList.toggle('abierto');
+    menu.setAttribute('aria-expanded', String(abierto));
+    menu.setAttribute('aria-label', abierto ? 'Cerrar menú' : 'Abrir menú');
+  });
+
   // Intro: una vez por sesión.
   var intro = document.getElementById('intro');
   if (intro && !intro.hidden) {
