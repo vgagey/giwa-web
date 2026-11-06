@@ -37,7 +37,9 @@
     cuerpo.appendChild(nodo('h2', '', d.titulo));
     cuerpo.appendChild(nodo('p', 'nota', d.tipo));
     cuerpo.appendChild(nodo('p', '', d.descripcion));
-    cuerpo.appendChild(nodo('p', 'nota', d.stack));
+    var tags = nodo('p', 'tags');
+    d.stack.split(' · ').forEach(function (t, i) { tags.appendChild(nodo('span', 'tag ' + (i % 2 ? 'vi' : 'az'), t)); });
+    cuerpo.appendChild(tags);
     var acc = nodo('div', 'demo-acc');
     if (d.activa) {
       var b = nodo('button', 'btn bp', 'Ingresar con código');
