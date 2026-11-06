@@ -42,7 +42,7 @@ p{margin:0 0 18px}
 .intro .btn{position:absolute;right:24px;bottom:24px}
 
 /* Portada */
-.hero{position:relative;max-width:1280px;margin:0 auto;padding:clamp(40px,6vw,80px) clamp(16px,4vw,48px);display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:32px;align-items:center;isolation:isolate}
+.hero{position:relative;max-width:1280px;margin:0 auto;padding:clamp(40px,6vw,80px) clamp(16px,4vw,48px);display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:32px;align-items:center;isolation:isolate;background:var(--bg)}
 .hero::before{content:"";position:absolute;z-index:-1;right:0;top:-10%;width:60%;aspect-ratio:1;background:radial-gradient(circle,rgba(0,144,255,.2),rgba(168,85,247,.08) 45%,transparent 70%);animation:late 7s ease-in-out infinite}
 .hero h1{animation:sube .9s both}
 .hero .lead{animation:sube .9s .2s both}
