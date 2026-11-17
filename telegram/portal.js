@@ -96,15 +96,29 @@
   /* ── Rubros ───────────────────────────────────────────────── */
   var RUBROS = [
     { id: 'oficina', ico: 'maletin', nombre: 'Oficina y tareas', desc: 'Tareas, responsables, comentarios con menciones, alertas y agenda de un equipo de cinco personas. Un Kanban dentro del chat.', activa: true,
+      empresa: 'Estudio Norte', quien: '<b>Laura Ríos</b>, coordinadora de un estudio de arquitectura ficticio con cinco personas',
       lead: 'Vas a ser Laura Ríos, coordinadora de Estudio Norte, un estudio de arquitectura ficticio. Dejanos tus datos y conectá tu Telegram.' },
-    { id: 'consultorio', ico: 'salud', nombre: 'Consultorio clínico', desc: 'Pacientes, médicos, turnos, obras sociales y coberturas de ejemplo.' },
+    { id: 'consultorio', ico: 'salud', nombre: 'Consultorio clínico', desc: 'Pacientes, médicos y especialidades. Turnos con confirmación, reprogramación y recordatorio al paciente. Obras sociales y coberturas.', activa: false,   // se activa cuando corre el instalador (T-0098)
+      empresa: 'Clínica SaludTotal', quien: '<b>Sofía</b>, recepcionista de un consultorio ficticio con cinco médicos',
+      lead: 'Vas a ser Sofía, recepcionista de Clínica SaludTotal, un consultorio ficticio. Dejanos tus datos y conectá tu Telegram.' },
     { id: 'talleres', ico: 'llave', nombre: 'Talleres', desc: 'Turnos de service, estado del vehículo y avisos de retiro.' },
     { id: 'deportes', ico: 'trofeo', nombre: 'Deportes', desc: 'Torneos, fixture, carga de resultados y recordatorios de partidos.' },
     { id: 'eventos', ico: 'calendario', nombre: 'Organización de eventos', desc: 'Planificación, gastos, proveedores y seguimiento.' },
     { id: 'hogar', ico: 'casa', nombre: 'Organización del hogar', desc: 'Tareas de la casa, compras, gastos y agenda familiar.' }
   ];
-  var PRUEBAS = [
-    // [texto, aclaración, qué lo tilda: lo que el visitante tocó en Telegram]
+  // Por rubro: [texto, aclaración, qué lo tilda: lo que el visitante tocó en Telegram]
+  var PRUEBAS = {};
+  PRUEBAS.consultorio = [
+    ['Tocá <b>Buscar paciente</b> y escribí <b>Ramos</b>.', 'Hay dos: elegí uno y mirá su ficha.', /^cp\|/],
+    ['En la ficha, tocá <b>Cobertura</b>.', 'Lo que cubre su plan y el copago por especialidad.', /^cc\|/],
+    ['Tocá <b>Disponibilidad</b> y elegí una especialidad.', 'Los horarios libres de cada médico.', /^de\|/],
+    ['Tocá <b>Pedir turno</b>: paciente, especialidad, médico y horario.', '', /^cs\|/],
+    ['<b>Confirmá</b> el turno.', 'El mismo mensaje se actualiza.', /^cok\|/],
+    ['En <b>Turnos</b>, <b>reprogramá</b> uno.', 'El horario anterior queda libre.', /^crs\|/],
+    ['<b>Cancelá</b> otro turno.', '', /^cx\|/],
+    ['En un turno, tocá <b>Recordatorio en 1 minuto</b>.', 'Te llega como lo recibe el paciente, con botones para confirmar.', /^crec\|/]
+  ];
+  PRUEBAS.oficina = [
     ['Tocá <b>Mis tareas</b> y abrí la #2.', 'Es una tarea compartida con Martín.', /^t\|/],
     ['Tocá <b>Tablero</b>.', 'El equipo por columnas, como un Kanban.', /^(tablero|kanban|\/tablero|tab)$/],
     ['Cambiá el estado de una tarea con <b>Empezar</b> o <b>Finalizar</b>.', 'El mismo mensaje se actualiza.', /^est\|/],
@@ -114,6 +128,15 @@
     ['En una tarea, tocá <b>Recordarme</b> y elegí <b>En 1 minuto</b>.', 'Te llega el aviso sin costo por mensaje.', /^rr\|/],
     ['Mirá la <b>Agenda</b> de la semana y tocá <b>Equipo</b>.', '', /^(\/?equipo|eq)$/]
   ];
+  function pruebas() { return PRUEBAS[(sesion && sesion.rubro) || 'oficina'] || PRUEBAS.oficina; }
+  function pintarPruebas() {
+    var ol = $('pruebas'); ol.textContent = '';
+    pruebas().forEach(function (p) {
+      var li = document.createElement('li');
+      li.innerHTML = ico('check') + '<div>' + p[0] + (p[1] ? ' <span>' + p[1] + '</span>' : '') + '</div>';
+      ol.appendChild(li);
+    });
+  }
   // Tarifas del Simulador Costos Meta (octubre 2026)
   var META = { gratis: 1000, usd: 0.026, personas: 100 };
   var vivo = null;
@@ -123,7 +146,7 @@
     if (!u) return;
     var hechos = u.hechos || [];
     document.querySelectorAll('#pruebas li').forEach(function (li, i) {
-      var ok = hechos.some(function (d) { return PRUEBAS[i][2].test(d); });
+      var ok = hechos.some(function (d) { return pruebas()[i][2].test(d); });
       li.classList.toggle('hecho', ok);
     });
     var bot = u.nuevos + u.reescritos, mes = bot * META.personas, usd = Math.max(0, mes - META.gratis) * META.usd;
@@ -156,11 +179,6 @@
     $('rubros').appendChild(c);
   });
 
-  PRUEBAS.forEach(function (p) {
-    var li = document.createElement('li');
-    li.innerHTML = ico('check') + '<div>' + p[0] + (p[1] ? ' <span>' + p[1] + '</span>' : '') + '</div>';
-    $('pruebas').appendChild(li);
-  });
 
   function paso(id) {
     ['paso-rubros', 'paso-datos', 'paso-telegram', 'paso-listo'].forEach(function (x) { $(x).hidden = x !== id; });
@@ -215,6 +233,10 @@
   }
 
   function listo(r) {
+    var ru = RUBROS.filter(function (x) { return x.id === sesion.rubro; })[0] || RUBROS[0];
+    $('listo-t').textContent = 'Ya estás en ' + ru.empresa;
+    $('listo-quien').innerHTML = ru.quien;
+    if (!$('pruebas').children.length || $('pruebas').dataset.rubro !== ru.id) { pintarPruebas(); $('pruebas').dataset.rubro = ru.id; }
     $('tg-nombre').textContent = r.tg_nombre || 'tu Telegram';
     $('vence').textContent = fechaHora(sesion.vence);
     $('abrir-tg-2').href = 'https://t.me/' + CFG.bot;
@@ -376,7 +398,7 @@
         var hay = r.configurado != null ? r.configurado : r.bot_token,
             st = r.bot ? ['st-ok', 'Conectado a ' + r.bot]
               : r.bot_error ? ['st-error', 'El token no funciona: ' + r.bot_error]
-              : hay ? ['st-ok', 'Token cargado'] : ['st-falta', 'Falta el token: cargalo en el CRM'];
+              : hay ? ['st-ok', 'Token cargado'] : ['st-falta', 'Falta el token del bot'];
         $('st-bot').className = 'estado-bot ' + st[0];
         $('st-bot').textContent = st[1];
         var ul = $('st-errores'); ul.textContent = '';
@@ -417,6 +439,22 @@
     $('adm-salir').addEventListener('click', function () { cliente().auth.signOut().then(function () { cargado = false; vista('adm-entrar'); }); });
     $('adm-salir-2').addEventListener('click', function () { cliente().auth.signOut().then(function () { vista('adm-entrar'); }); });
     $('adm-recargar').addEventListener('click', function () { cargado = false; estado(); });
+    $('f-token').addEventListener('submit', function (e) {
+      e.preventDefault();
+      var campo = $('bot_token'), boton = e.target.querySelector('button');
+      boton.disabled = true;
+      llamar('guardar', { clave: 'bot_token', valor: campo.value })
+        .then(function (r) { aviso($('e-config'), r.ok ? 'Token guardado.' : r.error, r.ok); if (r.ok) { campo.value = ''; estado(); } })
+        .catch(function () { aviso($('e-config'), 'No se pudo guardar.'); })
+        .finally(function () { boton.disabled = false; });
+    });
+    $('adm-conectar').addEventListener('click', function () {
+      var b = this; b.disabled = true;
+      llamar('conectar')
+        .then(function (r) { aviso($('e-config'), r.ok ? 'Listo: el bot quedó conectado. Revisá los errores en unos segundos.' : r.error, r.ok); setTimeout(estado, 4000); })
+        .catch(function () { aviso($('e-config'), 'No se pudo conectar.'); })
+        .finally(function () { b.disabled = false; });
+    });
 
     return { abrir: abrir };
   })();

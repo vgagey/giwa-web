@@ -230,3 +230,7 @@ h1 { font-weight: 300; font-size: 26px; line-height: 1.25; margin: 0 0 10px; }
 @media (hover: none) {
   .rubro:hover { transform: none; }
 }
+
+/* Solapa GIWA: carga del token */
+.fila-form { display: flex; align-items: flex-end; gap: 12px; margin: 16px 0 8px; max-width: 560px; }
+.fila-form .fg { flex: 1; min-width: 0; }

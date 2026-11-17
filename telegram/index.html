@@ -60,8 +60,8 @@
 
     <div id="paso-listo" hidden>
       <button class="volver" data-volver>‹ Rubros</button>
-      <h1>Ya estás en Estudio Norte</h1>
-      <p class="lead">Conectado como <b id="tg-nombre"></b>. En Telegram sos <b>Laura Ríos</b>, coordinadora de un estudio de arquitectura ficticio con cinco personas.</p>
+      <h1 id="listo-t">Ya estás en la demo</h1>
+      <p class="lead">Conectado como <b id="tg-nombre"></b>. En Telegram sos <span id="listo-quien"></span>.</p>
       <div class="uso">
         <div class="uso-c"><div class="uso-n num" id="uso-bot">0</div><div class="uso-l">mensajes del bot</div></div>
         <div class="uso-c"><div class="uso-n num" id="uso-re">0</div><div class="uso-l">reescritos: en WhatsApp serían mensajes nuevos</div></div>
@@ -157,11 +157,17 @@
         <summary><i data-logo="tg"></i>Bot de demos<i class="flecha" data-ico="abajo"></i></summary>
         <div class="desp-c">
           <p class="estado-bot" id="st-bot"></p>
-          <p class="nota">El token se carga y se cambia en el CRM: Configuración › Telegram › Bot de demos. Acá sólo se ve el estado.</p>
+          <form class="fila-form" id="f-token">
+            <div class="fg"><label for="bot_token">Token del bot (@BotFather)</label>
+              <input id="bot_token" name="bot_token" type="password" autocomplete="off" placeholder="Pegá el token nuevo"></div>
+            <button class="btn bg" type="submit">Guardar</button>
+          </form>
+          <p class="nota">Se guarda en la base (schema TelegramDemo) y no se vuelve a mostrar.</p>
           <div class="acciones">
-            <a class="btn bg" href="https://crm.giwa-ia.com/" target="_blank" rel="noopener"><i data-ico="abrir"></i>Abrir el CRM</a>
+            <button class="btn bp" id="adm-conectar" type="button">Conectar el bot</button>
             <button class="btn bg" id="adm-recargar" type="button"><i data-ico="recargar"></i>Actualizar</button>
           </div>
+          <p class="aviso" id="e-config" hidden></p>
           <div class="sec sec-esp">Últimos errores de Telegram</div>
           <ul class="errores" id="st-errores"></ul>
         </div>
