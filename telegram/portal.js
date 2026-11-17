@@ -104,15 +104,35 @@
     { id: 'hogar', ico: 'casa', nombre: 'Organización del hogar', desc: 'Tareas de la casa, compras, gastos y agenda familiar.' }
   ];
   var PRUEBAS = [
-    ['Tocá <b>Mis tareas</b> y abrí la #2.', 'Es una tarea compartida con Martín.'],
-    ['Tocá <b>Tablero</b>.', 'El equipo por columnas, como un Kanban.'],
-    ['Cambiá el estado de una tarea con <b>Empezar</b> o <b>Finalizar</b>.', 'El mismo mensaje se actualiza.'],
-    ['Tocá <b>Comentar</b> y escribí un comentario con <b>@Martín</b>.', 'La mención le avisa.'],
-    ['Creá una tarea con <b>Nueva tarea</b> y asignala a dos personas.', ''],
-    ['Abrí <b>Alertas</b>.', 'Vencidas, las que vencen hoy y quién te mencionó.'],
-    ['En una tarea, tocá <b>Recordarme</b> y elegí <b>En 1 minuto</b>.', 'Te llega el aviso sin costo por mensaje.'],
-    ['Mirá la <b>Agenda</b> de la semana y tocá <b>Equipo</b>.', '']
+    // [texto, aclaración, qué lo tilda: lo que el visitante tocó en Telegram]
+    ['Tocá <b>Mis tareas</b> y abrí la #2.', 'Es una tarea compartida con Martín.', /^t\|/],
+    ['Tocá <b>Tablero</b>.', 'El equipo por columnas, como un Kanban.', /^(tablero|kanban|\/tablero|tab)$/],
+    ['Cambiá el estado de una tarea con <b>Empezar</b> o <b>Finalizar</b>.', 'El mismo mensaje se actualiza.', /^est\|/],
+    ['Tocá <b>Comentar</b> y escribí un comentario con <b>@Martín</b>.', 'La mención le avisa.', /^com\|/],
+    ['Creá una tarea con <b>Nueva tarea</b> y asignala a dos personas.', '', /^npok/],
+    ['Abrí <b>Alertas</b>.', 'Vencidas, las que vencen hoy y quién te mencionó.', /^\/?alertas$/],
+    ['En una tarea, tocá <b>Recordarme</b> y elegí <b>En 1 minuto</b>.', 'Te llega el aviso sin costo por mensaje.', /^rr\|/],
+    ['Mirá la <b>Agenda</b> de la semana y tocá <b>Equipo</b>.', '', /^(\/?equipo|eq)$/]
   ];
+  // Tarifas del Simulador Costos Meta (octubre 2026)
+  var META = { gratis: 1000, usd: 0.026, personas: 100 };
+  var vivo = null;
+  function plata(n) { return n.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+  function entero(n) { return n.toLocaleString('es-AR'); }
+  function pintarUso(u) {
+    if (!u) return;
+    var hechos = u.hechos || [];
+    document.querySelectorAll('#pruebas li').forEach(function (li, i) {
+      var ok = hechos.some(function (d) { return PRUEBAS[i][2].test(d); });
+      li.classList.toggle('hecho', ok);
+    });
+    var bot = u.nuevos + u.reescritos, mes = bot * META.personas, usd = Math.max(0, mes - META.gratis) * META.usd;
+    $('uso-bot').textContent = entero(bot);
+    $('uso-re').textContent = entero(u.reescritos);
+    $('uso-tuyos').textContent = entero(u.tuyos);
+    $('uso-mes').textContent = entero(mes);
+    $('uso-usd').textContent = 'USD ' + plata(usd);
+  }
 
   var rubro = null, sesion = leer(), sondeo = null;
 
@@ -138,13 +158,14 @@
 
   PRUEBAS.forEach(function (p) {
     var li = document.createElement('li');
-    li.innerHTML = p[0] + (p[1] ? ' <span>' + p[1] + '</span>' : '');
+    li.innerHTML = ico('check') + '<div>' + p[0] + (p[1] ? ' <span>' + p[1] + '</span>' : '') + '</div>';
     $('pruebas').appendChild(li);
   });
 
   function paso(id) {
     ['paso-rubros', 'paso-datos', 'paso-telegram', 'paso-listo'].forEach(function (x) { $(x).hidden = x !== id; });
     if (id !== 'paso-telegram' && sondeo) { clearInterval(sondeo); sondeo = null; }
+    if (id !== 'paso-listo' && vivo) { clearInterval(vivo); vivo = null; }
     window.scrollTo(0, 0);
   }
 
@@ -198,7 +219,12 @@
     $('vence').textContent = fechaHora(sesion.vence);
     $('abrir-tg-2').href = 'https://t.me/' + CFG.bot;
     aviso($('e-listo'), '');
-    paso('paso-listo');
+    if ($('paso-listo').hidden) paso('paso-listo');
+    pintarUso(r.uso);
+    // Panel en vivo: se actualiza mientras la persona prueba en Telegram
+    if (!vivo) vivo = setInterval(function () {
+      portal('estado', { token: sesion.token }).then(function (x) { if (x.ok && x.activa) pintarUso(x.uso); }).catch(function () {});
+    }, 5000);
   }
 
   // Volver a la demo que ya estaba abierta en este navegador

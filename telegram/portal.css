@@ -137,10 +137,22 @@ h1 { font-weight: 300; font-size: 26px; line-height: 1.25; margin: 0 0 10px; }
 @keyframes lat { 50% { opacity: .3; } }
 #enlace-tg { color: var(--texto); word-break: break-all; }
 
-/* Qué probar */
-.pruebas { margin: 0 0 32px; padding-left: 22px; max-width: 680px; }
-.pruebas li { margin-bottom: 12px; padding-left: 4px; }
-.pruebas li::marker { font-family: var(--f-num); color: var(--brillo); }
+/* Panel en vivo: contador de mensajes */
+.uso { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(0, 1.6fr); gap: 12px; }
+.uso-c { background: var(--panel); border: 1px solid var(--marco); border-top: 2px solid var(--brillo); border-radius: var(--r2); padding: 14px; min-width: 0; }
+.uso-n { font-size: 26px; line-height: 1.2; color: var(--brillo); }
+.uso-l { color: var(--texto2); font-size: 12px; }
+.uso-meta { border-top-color: var(--pendiente); }
+.uso-fila { display: flex; align-items: center; gap: 8px; margin-top: 8px; font-size: 13px; }
+.uso-fila .logo-pl { width: 18px; height: 18px; }
+@media (max-width: 720px) { .uso { grid-template-columns: repeat(3, minmax(0, 1fr)); } .uso-meta { grid-column: 1 / -1; } }
+
+/* Qué probar: se tildan solos */
+.pruebas { list-style: none; margin: 0 0 32px; padding: 0; max-width: 720px; }
+.pruebas li { display: flex; gap: 12px; padding: 8px; border-radius: var(--r); }
+.pruebas li .ico { margin-top: 3px; color: var(--marco); }
+.pruebas li.hecho .ico { color: var(--ok); }
+.pruebas li.hecho > div { color: var(--texto2); }
 .pruebas span { color: var(--texto2); }
 .acciones { display: flex; gap: 12px; flex-wrap: wrap; }
 
