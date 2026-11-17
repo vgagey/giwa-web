@@ -12,7 +12,13 @@
 </head>
 <body>
 <header class="top">
-  <div class="marca">GIWA <span class="llave">{IA}</span></div>
+  <div class="cab">
+    <img class="logo" src="logo-giwa.png" alt="GIWA {IA}" width="160" height="32">
+    <div class="cab-t">
+      <div class="titulo">Demos en Telegram</div>
+      <div class="sub">Operá un negocio desde el chat, sin costo por mensaje.</div>
+    </div>
+  </div>
   <nav class="ptabs" role="tablist">
     <button class="ptab on" role="tab" data-tab="demos">Demos</button>
     <button class="ptab" role="tab" data-tab="comparar">WhatsApp vs. Telegram</button>
@@ -47,7 +53,7 @@
       <button class="volver" data-volver>‹ Rubros</button>
       <h1>Abrí Telegram</h1>
       <p class="lead">Tocá el botón y después <b>Iniciar</b> en el chat. Ahí empieza tu demo.</p>
-      <a class="btn bp" id="abrir-tg" target="_blank" rel="noopener">Abrir en Telegram</a>
+      <a class="btn bp" id="abrir-tg" target="_blank" rel="noopener"><i data-logo="tg"></i>Abrir en Telegram</a>
       <p class="nota">¿Estás en la computadora y Telegram está en tu celular? Abrí este enlace desde el celular:<br><span class="num" id="enlace-tg"></span></p>
       <p class="espera"><span class="punto"></span>Esperando que inicies el bot…</p>
     </div>
@@ -59,11 +65,11 @@
       <div class="sec">Qué probar</div>
       <ol class="pruebas" id="pruebas"></ol>
       <div class="acciones">
-        <a class="btn bp" id="abrir-tg-2" target="_blank" rel="noopener">Volver a Telegram</a>
-        <button class="btn bg" id="reiniciar" type="button">Reiniciar datos</button>
+        <a class="btn bp" id="abrir-tg-2" target="_blank" rel="noopener"><i data-logo="tg"></i>Volver a Telegram</a>
+        <button class="btn bg" id="reiniciar" type="button"><i data-ico="recargar"></i>Reiniciar datos</button>
       </div>
       <p class="aviso" id="e-listo" hidden></p>
-      <p class="nota">La demo dura 24 horas: vence el <span class="num" id="vence"></span>. Tus datos no los ve nadie más.</p>
+      <p class="nota">La demo dura <span class="num">24</span> horas: vence el <span class="num" id="vence"></span>. Tus datos no los ve nadie más.</p>
     </div>
   </section>
 
@@ -71,51 +77,57 @@
   <section id="tab-comparar" class="tab" hidden>
     <h1>WhatsApp Business o Telegram</h1>
     <p class="lead">Los dos sirven para atender y operar un negocio por chat. La diferencia grande está en cuánto cuesta cada mensaje y en cuánta libertad tiene el bot.</p>
-    <div class="tabla-wrap">
-      <table class="tbl">
-        <thead><tr><th>Aspecto</th><th>WhatsApp Business API</th><th>Telegram</th><th>Conviene</th></tr></thead>
-        <tbody id="comparativa"></tbody>
-      </table>
-    </div>
-    <p class="nota">Tarifas de Meta según el esquema vigente en octubre de 2026. Meta las puede cambiar.</p>
 
-    <div class="dos">
-      <div>
-        <div class="sec">Dónde gana Telegram</div>
-        <ul class="lista">
-          <li><b>Operación diaria del equipo:</b> tareas, avisos y aprobaciones sin pagar por mensaje.</li>
-          <li><b>Clientes recurrentes:</b> turnos, recordatorios y seguimiento sin ventana de 24 horas.</li>
-          <li><b>Mucho volumen:</b> el costo no crece con la cantidad de mensajes.</li>
-          <li><b>Pantallas más ricas:</b> menús con muchos botones y mensajes que se actualizan solos.</li>
-        </ul>
+    <div class="claves" id="claves"></div>
+
+    <details class="desp" open>
+      <summary><i data-ico="chat"></i>Lado a lado<i class="flecha" data-ico="abajo"></i></summary>
+      <div class="desp-c">
+        <div class="tabla-wrap">
+          <table class="tbl comp">
+            <thead><tr><th>Aspecto</th><th><span class="plat"><i data-logo="wa"></i>WhatsApp Business API</span></th><th><span class="plat"><i data-logo="tg"></i>Telegram</span></th><th>Conviene</th></tr></thead>
+            <tbody id="comparativa"></tbody>
+          </table>
+        </div>
+        <p class="nota">Tarifas de Meta según el esquema vigente en octubre de <span class="num">2026</span>. Meta las puede cambiar.</p>
       </div>
-      <div>
-        <div class="sec">Qué falta y cómo se resuelve</div>
-        <ul class="lista">
-          <li><b>Primer contacto:</b> el bot no puede escribirle a un teléfono. Se resuelve con un enlace o un código QR en la web, el mail o el ticket.</li>
-          <li><b>Alcance:</b> menos gente lo tiene instalado. Se resuelve captando por la web o WhatsApp y operando por Telegram.</li>
-          <li><b>Confianza:</b> no hay una insignia de empresa verificada. Se resuelve con un nombre y una foto claros y el enlace publicado en tus canales oficiales.</li>
-        </ul>
-      </div>
-    </div>
+    </details>
+
+    <details class="desp" open>
+      <summary><i data-ico="check"></i>Dónde gana Telegram<i class="flecha" data-ico="abajo"></i></summary>
+      <div class="desp-c"><ul class="puntos" id="gana-tg"></ul></div>
+    </details>
+
+    <details class="desp" open>
+      <summary><i data-ico="info"></i>Qué falta y cómo se resuelve<i class="flecha" data-ico="abajo"></i></summary>
+      <div class="desp-c"><ul class="puntos" id="falta-tg"></ul></div>
+    </details>
   </section>
 
   <!-- ── Telegram ──────────────────────────────────────────── -->
   <section id="tab-telegram" class="tab" hidden>
-    <h1>Lo que Telegram puede hacer</h1>
+    <h1 class="h-logo"><i data-logo="tg"></i>Lo que Telegram puede hacer</h1>
     <p class="lead">Muchas de estas funciones no las conoce casi nadie, y son las que permiten usar el chat como una herramienta de trabajo.</p>
-    <div class="tres">
-      <div><div class="sec">Funciones clave</div><dl class="items" id="tg-claves"></dl></div>
-      <div><div class="sec">Personalización</div><dl class="items" id="tg-perso"></dl></div>
-      <div><div class="sec">Lo poco conocido</div><dl class="items" id="tg-oculto"></dl></div>
-    </div>
+
+    <details class="desp" open>
+      <summary><i data-ico="botones"></i>Funciones clave<i class="flecha" data-ico="abajo"></i></summary>
+      <div class="desp-c"><div class="items" id="tg-claves"></div></div>
+    </details>
+    <details class="desp" open>
+      <summary><i data-ico="paleta"></i>Personalización<i class="flecha" data-ico="abajo"></i></summary>
+      <div class="desp-c"><div class="items" id="tg-perso"></div></div>
+    </details>
+    <details class="desp" open>
+      <summary><i data-ico="ventana"></i>Posibilidades de uso<i class="flecha" data-ico="abajo"></i></summary>
+      <div class="desp-c"><div class="items" id="tg-oculto"></div></div>
+    </details>
   </section>
 
   <!-- ── GIWA (sólo equipo) ────────────────────────────────── -->
   <section id="tab-giwa" class="tab" hidden>
     <div id="adm-entrar" hidden>
       <h1>Acceso GIWA</h1>
-      <p class="lead">Configuración del bot y leads de las demos. Sólo para cuentas @giwa-ia.com.</p>
+      <p class="lead">Estado del bot y leads de las demos. Sólo para cuentas @giwa-ia.com.</p>
       <button class="btn bp" id="adm-google" type="button">Entrar con Google</button>
       <p class="aviso" id="e-adm" hidden></p>
     </div>
@@ -128,48 +140,35 @@
 
     <div id="adm-panel" hidden>
       <div class="adm-cab">
-        <h1>Configuración</h1>
+        <h1>Panel GIWA</h1>
         <p class="nota"><span id="adm-quien"></span> · <button class="enlace" id="adm-salir" type="button">Salir</button></p>
       </div>
 
-      <div class="dos">
-        <div>
-          <div class="sec">Claves</div>
-          <form class="fila-form" data-guardar>
-            <div class="fg"><label for="bot_token">Token del bot (@BotFather) · <span id="st-bot"></span></label>
-              <input id="bot_token" name="bot_token" type="password" autocomplete="off" placeholder="Pegá el token nuevo"></div>
-            <button class="btn bg" type="submit">Guardar</button>
-          </form>
-          <form class="fila-form" data-guardar>
-            <div class="fg"><label for="gemini_api_key">API key de Gemini · <span id="st-gemini"></span></label>
-              <input id="gemini_api_key" name="gemini_api_key" type="password" autocomplete="off" placeholder="Pegá la key nueva"></div>
-            <button class="btn bg" type="submit">Guardar</button>
-          </form>
-          <form class="fila-form" data-guardar>
-            <div class="fg"><label for="portal_url">Dirección de este portal</label>
-              <input id="portal_url" name="portal_url" type="url" autocomplete="off"></div>
-            <button class="btn bg" type="submit">Guardar</button>
-          </form>
-          <p class="nota">Las claves no se vuelven a mostrar: sólo se ve si están cargadas.</p>
-          <button class="btn bp" id="adm-conectar" type="button">Conectar el bot</button>
-          <p class="aviso" id="e-config" hidden></p>
+      <details class="desp" open>
+        <summary><i data-logo="tg"></i>Bot de demos<i class="flecha" data-ico="abajo"></i></summary>
+        <div class="desp-c">
+          <p class="estado-bot" id="st-bot"></p>
+          <p class="nota">El token se carga y se cambia en el CRM: Configuración › Telegram › Bot de demos. Acá sólo se ve el estado.</p>
+          <div class="acciones">
+            <a class="btn bg" href="https://crm.giwa-ia.com/" target="_blank" rel="noopener"><i data-ico="abrir"></i>Abrir el CRM</a>
+            <button class="btn bg" id="adm-recargar" type="button"><i data-ico="recargar"></i>Actualizar</button>
+          </div>
+          <div class="sec sec-esp">Últimos errores de Telegram</div>
+          <ul class="errores" id="st-errores"></ul>
         </div>
-        <div>
-          <div class="sec">Últimos errores de Telegram</div>
-          <ul class="lista errores" id="st-errores"></ul>
-        </div>
-      </div>
+      </details>
 
-      <div class="leads-cab">
-        <div class="sec">Leads · <span class="num" id="leads-n"></span></div>
-        <button class="btn bg" id="adm-recargar" type="button">Actualizar</button>
-      </div>
-      <div class="tabla-wrap">
-        <table class="tbl leads">
-          <thead><tr><th>Fecha</th><th>Nombre</th><th>Correo</th><th>Rubro</th><th>Telegram</th><th>ID de Telegram</th></tr></thead>
-          <tbody id="leads"></tbody>
-        </table>
-      </div>
+      <details class="desp" open>
+        <summary><i data-ico="grupo"></i>Leads · <span class="num" id="leads-n"></span><i class="flecha" data-ico="abajo"></i></summary>
+        <div class="desp-c">
+          <div class="tabla-wrap">
+            <table class="tbl leads">
+              <thead><tr><th>Fecha</th><th>Nombre</th><th>Correo</th><th>Rubro</th><th>Telegram</th><th>ID de Telegram</th></tr></thead>
+              <tbody id="leads"></tbody>
+            </table>
+          </div>
+        </div>
+      </details>
     </div>
   </section>
 </main>
