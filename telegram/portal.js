@@ -98,13 +98,24 @@
     { id: 'oficina', ico: 'maletin', nombre: 'Oficina y tareas', desc: 'Tareas, responsables, comentarios con menciones, alertas y agenda de un equipo de cinco personas. Un Kanban dentro del chat.', activa: true,
       empresa: 'Estudio Norte', quien: '<b>Laura Ríos</b>, coordinadora de un estudio de arquitectura ficticio con cinco personas',
       lead: 'Vas a ser Laura Ríos, coordinadora de Estudio Norte, un estudio de arquitectura ficticio. Dejanos tus datos y conectá tu Telegram.' },
-    { id: 'consultorio', ico: 'salud', nombre: 'Consultorio clínico', desc: 'Pacientes, médicos y especialidades. Turnos con confirmación, reprogramación y recordatorio al paciente. Obras sociales y coberturas.', activa: false,   // se activa cuando corre el instalador (T-0098)
+    { id: 'consultorio', ico: 'salud', nombre: 'Consultorio clínico', desc: 'Pacientes, médicos y especialidades. Turnos con confirmación, reprogramación y recordatorio al paciente. Obras sociales y coberturas.', activa: true,
       empresa: 'Clínica SaludTotal', quien: '<b>Sofía</b>, recepcionista de un consultorio ficticio con cinco médicos',
       lead: 'Vas a ser Sofía, recepcionista de Clínica SaludTotal, un consultorio ficticio. Dejanos tus datos y conectá tu Telegram.' },
-    { id: 'talleres', ico: 'llave', nombre: 'Talleres', desc: 'Turnos de service, estado del vehículo y avisos de retiro.' },
-    { id: 'deportes', ico: 'trofeo', nombre: 'Deportes', desc: 'Torneos, fixture, carga de resultados y recordatorios de partidos.' },
-    { id: 'eventos', ico: 'calendario', nombre: 'Organización de eventos', desc: 'Planificación, gastos, proveedores y seguimiento.' },
-    { id: 'hogar', ico: 'casa', nombre: 'Organización del hogar', desc: 'Tareas de la casa, compras, gastos y agenda familiar.' }
+    { id: 'talleres', ico: 'clip', nombre: 'Talleres de confección', desc: 'Órdenes a talleres externos, entregas que el taller confirma desde el chat, reclamos del 0800 y liquidación.', activa: true,
+      empresa: 'Cueros del Sur', quien: '<b>Paula</b>, coordinadora de producción de una marroquinería ficticia con cuatro talleres',
+      lead: 'Vas a ser Paula, coordinadora de producción de Cueros del Sur, una marroquinería ficticia. Dejanos tus datos y conectá tu Telegram.' },
+    { id: 'helpdesk', ico: 'ventana', nombre: 'Helpdesk IT', desc: 'Mesa de ayuda nivel 1: resuelve con la base de conocimiento, abre tickets al equipo que corresponde y avisa cuando se resuelven.', activa: true,
+      empresa: 'Nexo Digital', quien: 'una persona de <b>Nexo Digital</b> que pide ayuda a la mesa de IT',
+      lead: 'Vas a trabajar en Nexo Digital, una empresa ficticia, y pedir ayuda a su mesa de IT. Dejanos tus datos y conectá tu Telegram.' },
+    { id: 'deportes', ico: 'trofeo', nombre: 'Deportes', desc: 'Fixture, carga de resultados, tabla de posiciones y aviso a los delegados con confirmación.', activa: true,
+      empresa: 'Tinku', quien: 'el organizador de <b>Tinku</b>, una liga amateur ficticia de seis equipos',
+      lead: 'Vas a organizar Tinku, una liga amateur ficticia de fútbol 5. Dejanos tus datos y conectá tu Telegram.' },
+    { id: 'eventos', ico: 'calendario', nombre: 'Organización de eventos', desc: 'Presupuesto, proveedores que confirman desde el chat, pagos pendientes y cronograma del día.', activa: true,
+      empresa: 'Aura Eventos', quien: '<b>Carla</b>, productora de una organizadora de eventos ficticia',
+      lead: 'Vas a ser Carla, productora de Aura Eventos, con un casamiento y un lanzamiento en marcha. Dejanos tus datos y conectá tu Telegram.' },
+    { id: 'hogar', ico: 'casa', nombre: 'Organización del hogar', desc: 'Tareas de la casa por persona, lista de compras compartida y vencimientos con aviso.', activa: true,
+      empresa: 'la familia Dory', quien: '<b>Vale</b>, de una familia ficticia de cuatro personas',
+      lead: 'Vas a ser Vale, de la familia Dory, que se organiza desde un chat. Dejanos tus datos y conectá tu Telegram.' }
   ];
   // Por rubro: [texto, aclaración, qué lo tilda: lo que el visitante tocó en Telegram]
   var PRUEBAS = {};
@@ -117,6 +128,42 @@
     ['En <b>Turnos</b>, <b>reprogramá</b> uno.', 'El horario anterior queda libre.', /^crs\|/],
     ['<b>Cancelá</b> otro turno.', '', /^cx\|/],
     ['En un turno, tocá <b>Recordatorio en 1 minuto</b>.', 'Te llega como lo recibe el paciente, con botones para confirmar.', /^crec\|/]
+  ];
+  PRUEBAS.talleres = [
+    ['Tocá <b>Entregas de hoy</b> y abrí una orden.', 'Taller, unidades entregadas y fecha.', /^to\|/],
+    ['En la orden, tocá <b>Pedir confirmación al taller</b>.', 'Ves el mensaje que recibe el taller.', /^tap\|/],
+    ['Confirmá como el taller con <b>Confirmo la entrega</b>.', 'La orden se actualiza sola.', /^tac\|/],
+    ['Registrá una entrega parcial con <b>Registrar entrega</b>.', '', /^taq\|/],
+    ['En <b>Reclamos 0800</b>, derivá uno al taller.', '', /^trt\|/],
+    ['Mirá la <b>Liquidación</b> del mes.', 'Unidades entregadas por precio, por taller.', /^liquidacion$/]
+  ];
+  PRUEBAS.helpdesk = [
+    ['Escribí <b>no puedo entrar al correo</b>.', 'Te responde la solución de nivel 1.', /correo|mail|outlook/],
+    ['Escribí otro problema y tocá <b>No, abrir ticket</b>.', '', /^int$/],
+    ['Elegí el equipo al que se deriva.', 'Se crea el ticket con su número.', /^ieq\|/],
+    ['Abrí <b>Mis tickets</b>.', 'El estado de cada uno.', /^mis tickets$/],
+    ['Esperá un minuto con el portal abierto.', 'Te avisa cuando el equipo toma tu ticket.', /^itk\||^icl\|/]
+  ];
+  PRUEBAS.deportes = [
+    ['Mirá el <b>Fixture</b>.', '', /^fixture$/],
+    ['Tocá <b>Cargar resultado</b>, elegí un partido y escribí <b>2-1</b>.', 'La tabla se recalcula sola.', /^\d{1,2}\s*[-a :]\s*\d{1,2}$/],
+    ['Mirá la <b>Tabla</b>.', '', /^tabla$/],
+    ['Tocá <b>Avisar a los equipos</b> y mandá un aviso.', 'Ves el mensaje que recibe el delegado.', /^dav\|/],
+    ['Confirmá como el delegado.', '', /^dco\|/]
+  ];
+  PRUEBAS.eventos = [
+    ['Abrí <b>Eventos</b> y elegí el casamiento.', 'Presupuesto, comprometido, pagado y saldo.', /^eve\|/],
+    ['En <b>Proveedores</b>, pedile confirmación a uno.', 'Ves el mensaje que recibe el proveedor.', /^evq\|/],
+    ['Confirmá como el proveedor.', '', /^evk\|/],
+    ['En <b>Pagos pendientes</b>, pagá un saldo.', '', /^evg\|/],
+    ['Mirá el <b>Cronograma</b> del día.', '', /^cronograma$|^evc\|/]
+  ];
+  PRUEBAS.hogar = [
+    ['Tocá <b>Tareas de hoy</b> y marcá una como hecha.', 'El mismo mensaje se actualiza.', /^hot\|/],
+    ['Escribí <b>leche</b>.', 'Se suma a la lista de compras.', /^(?!\/)(?!tareas de hoy|lista de compras|vencimientos|semana|ayuda)[a-záéíóúñ ]{2,40}$/],
+    ['En la <b>Lista de compras</b>, tocá lo que ya compraste.', '', /^hoc\|/],
+    ['En <b>Vencimientos</b>, marcá uno como pagado.', '', /^hop\|/],
+    ['Pedí <b>Avisame en 1 minuto</b> en otro vencimiento.', '', /^hor\|/]
   ];
   PRUEBAS.oficina = [
     ['Tocá <b>Mis tareas</b> y abrí la #2.', 'Es una tarea compartida con Martín.', /^t\|/],
